@@ -26,18 +26,6 @@ const [parentcompany,setParentCompany]=useState([]);
 const [menuitems, setMenuitems]= useState([]);
 const [childcompany, setChildCompany]=useState([]);
 
-// const MContext = React.createContext();  //exporting context object
-// const MyProvider = () => {
-// const [id, setId]=useState("")
-
-//         return (
-//             <MContext.Provider value={
-//             {   
-//                 setMessage: (value) => setId(value)}}>
-//             {this.props.children}   //this indicates that all the child tags with MyProvider as Parent can access the global store.
-//             </MContext.Provider>)
-    
-// }
 
 useEffect(()=>{
   Axios.get('/api/company').then((data, key)=>{
@@ -171,7 +159,7 @@ console.log(resultArray1);
 
    
              
-        <Route path="/company" exact component= {Company}/>
+        
         <Route path="/helsinki_p/:id" exact component= {Helsinki} />
           <Route path="/" exact component={Home} />
             

@@ -85,22 +85,23 @@ console.log(pid);
 debugger;
 
         
-    const renderMenuItems = data => {
-
-        return parentcompany.map((item, index) =>
+    const renderMenuItems =data => {
+data = parentcompany
+        return data.map((item, index) =>
     
        
-        (item)? (
+        (item) ? (
 
             <Nav>
             <Link key={item.ID}
                 
-                onClick={e => {
-                    //path: window.location
+                onClick={(e) => {
+                
                     
                     teststa();
                     setpid(item.ID);
                     window.location.href="/helsinki_p/" + item.ID 
+                    
                     }}
                     
                 
@@ -121,7 +122,7 @@ debugger;
         <>
          
         <div style={{ width: (sideNavState) ? '250px' : '0' }} className="multilevelSideNav">
-            <Link to={"#"} className="closebtn" onClick={e => sideNavHandler(false)}>&times;</Link>
+            {/* <Link to={"#"} className="closebtn" onClick={e => sideNavHandler(false)}>&times;</Link> */}
             {(previousStack.length) ?
                 <Link to={"#"} onClick={e => {
                     const prevState = previousStack.pop();
