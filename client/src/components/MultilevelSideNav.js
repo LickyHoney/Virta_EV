@@ -4,8 +4,9 @@ import './MultilevelSideNav.css';
 import styled from 'styled-components';
 import Axios from 'axios';
 import Helsinki from './Companies/Helsinki';
+import { common } from '@material-ui/core/colors';
 
-const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
+const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onChangeSearch }) => {
 
     const Nav = styled.div`
   background: #15171c;
@@ -20,6 +21,8 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
     const [parentcompany,setParentCompany]=useState([]);
     const [stations, setStations]=useState([]);
     const [hide, setHide]=useState(false);
+    //const [searchTerm, setSearchTerm] = useState([])
+    const [q, setQ] = useState("")
     useEffect(()=>{
         Axios.get('/api/company').then((data, key)=>{
         
@@ -54,23 +57,38 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
         
         },[])
 debugger;
-        const station_data =stations.map((sid) => sid.CID)
-        console.log(station_data)
-
-
+       
+//         const onChangeSearch = (e) => {
+// debugger;
+//             const val = e.target.value;
+          
+//             setSearchTerm(val);
+          
+//           }
 
 const teststa = (e) =>{
-    //     parentcompany.map((item, index) => {
-    //     const pid_n = item.ID;
-    //     setpid(pid_n);
-    // })
+
+debugger;
+    // const results = parentcompany.filter(com =>
+    //     (com.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+    
+    
+    //     )
+    //     );
+
+
         previousStack.push(parentcompany);
         setPreviousStack(previousStack);
         debugger;
         setCurrentMenus(parentcompany);
         
-        debugger;
-
+        // const results = currentMenus.filter(com =>
+        //     (JSON.stringify(com).toLowerCase().includes(searchTerm.toLocaleLowerCase())
+        
+        
+        //     )
+        //     );
+        
     
 return (
                         
@@ -86,6 +104,8 @@ debugger;
 
         
     const renderMenuItems =data => {
+
+        
 data = parentcompany
         return data.map((item, index) =>
     
@@ -105,7 +125,7 @@ data = parentcompany
                     }}
                     
                 
-                to={"/helsinki_p/" + item.ID  }>{item.Name} &gt; </Link></Nav>
+                to={"/helsinki_p/" + item.ID  }>{item.Name}</Link></Nav>
 
         ) : <Nav><Link key={index}>{item.Name}</Link></Nav>
         
@@ -117,11 +137,15 @@ data = parentcompany
 
     }
    
-  
+    
     return data && (
         <>
          
         <div style={{ width: (sideNavState) ? '250px' : '0' }} className="multilevelSideNav">
+        <input type="text" name="title" id="exampleEmail"
+          placeholder="Search Station"
+          className="form-control mb-8 font-weight-bold " value={searchTerm} onChange={onChangeSearch} style={{ margin: "1rem" }}
+        />
             {/* <Link to={"#"} className="closebtn" onClick={e => sideNavHandler(false)}>&times;</Link> */}
             {(previousStack.length) ?
                 <Link to={"#"} onClick={e => {

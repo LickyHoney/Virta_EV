@@ -17,7 +17,7 @@ table.list {
   width:70%; 
   margin-left:15%; 
   margin-right:15%;
-  margin-top: 10%;
+  margin-top: 5%;
 }
 .list {
   border-collapse: collapse;
@@ -78,7 +78,7 @@ table.list {
 }
 .split {
   height: 100%;
-  width: 50%;
+  width: 40%;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -101,16 +101,135 @@ table.list {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-30%, -30%);
   text-align: center;
 }
 
-.centered img {
-  width: 150px;
-  border-radius: 50%;
-}
 
-.btn btn-success{
+/* .btn btn-success{
   margin-left: -2em; 
   margin-right:15%;
+} */
+
+.Modal_STA {
+  float: center;
+
+  width: 20%;
+ justify-content: center;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+
+}
+
+
+.Overlay {
+ float: center;
+
+  width:60%;
+  height:40%;
+  position: fixed;
+  margin-top:10%;
+  top: 60px;
+  left: 30%;
+  right: 60px;
+  bottom: 60px;
+  background-color: lightgray
+}
+
+.btn-group {
+  
+margin-left: -40em;
+  color: #f3f3f3;
+margin-top: 1em
+}
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 90px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+ 
+  background-color: #2ab934;;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #ca2222;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(55px);
+  -ms-transform: translateX(55px);
+  transform: translateX(55px);
+}
+
+
+.on
+{
+  display: none;
+}
+
+.on, .off
+{
+  color: white;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  font-size: 10px;
+  font-family: Verdana, sans-serif;
+}
+
+input:checked+ .slider .on
+{display: block;}
+
+input:checked + .slider .off
+{display: none;}
+
+
+
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;}
+
+  fieldset
+{
+    display: block;
+    float: left
 }

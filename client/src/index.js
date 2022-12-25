@@ -6,6 +6,8 @@ import Company from './Company'
 import * as serviceWorker from './serviceWorker';
 import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import Helsinki from './components/Companies/Helsinki';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 const theme = createTheme({
     typography: {

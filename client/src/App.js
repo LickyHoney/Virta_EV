@@ -25,6 +25,8 @@ const [sideNavState,setSideNavState] = useState(false);
 const [parentcompany,setParentCompany]=useState([]);
 const [menuitems, setMenuitems]= useState([]);
 const [childcompany, setChildCompany]=useState([]);
+const [searchTerm, setSearchTerm] = useState([]);
+
 
 
 useEffect(()=>{
@@ -54,13 +56,28 @@ useEffect(()=>{
   
   
   },[])
+  const onChangeSearch = (e) => {
+    debugger;
+                const val = e.target.value;
+              
+                setSearchTerm(val);
+              
+              }
 
+              const results = parentcompany.filter(com =>
+                (JSON.stringify(com).toLowerCase().includes(searchTerm)
+            
+            
+                )
+                );
 
-
-const resultArray1 = JSON.stringify(parentcompany.map((menu_item) => menu_item.ID).reduce((res, item, idx) => {
-  return [...res, { id: item, name: parentcompany.map((menu_item) => menu_item.Name)[idx] }];
+debugger;
+const resultArray1 = JSON.stringify(results.map((menu_item) => menu_item.ID).reduce((res, item, idx) => {
+  return [...res, { id: item, name: results.map((menu_item) => menu_item.Name)[idx] }];
 }, []));
 console.log(resultArray1);
+
+
 
 
  
@@ -151,7 +168,7 @@ console.log(resultArray1);
     <div className="App">
     
       <Router>
-        <MultilevelSideNav sideNavState={sideNavState} sideNavHandler={setSideNavState} data={resultArray1} />
+        <MultilevelSideNav sideNavState={sideNavState} sideNavHandler={setSideNavState} data={results} value={searchTerm} onChange={onChangeSearch} />
         <div>
           <Nav><h2><span style={{fontSize:'30px',cursor:'pointer', color:'white'}} onClick={e=>setSideNavState(true)}>&#9776; Companies</span></h2> </Nav>     
           <Switch> 

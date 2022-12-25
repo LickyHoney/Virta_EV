@@ -8,6 +8,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true}));
 
 const mysql = require('mysql');
+const { Console } = require('console');
 
 //Mysql configuration 
 const connection = mysql.createConnection({
@@ -44,14 +45,15 @@ app.get('/api/company/id/:id', (req, res) => {
 })
 
 //Create company
-app.post('/api/company/create', (req, res) => {
+app.post('/api/company/create/', (req, res) => {
   let sql_create = 'INSERT INTO Company.K001 (ID, Parent_ID, Name) VALUES ( ?, ?, ?)';
-  let ID = req.body.ID;
-  let Parent_ID = req.body.Parent_ID;
-  let Name = req.body.Name;
-  let params = [ID, Parent_ID, Name];
+  let id = req.body.ID;
+  let parent_id = req.body.Parent_ID;
+  let name = req.body.Name;
+  let params = [id, parent_id, name];
   connection.query(sql_create, params,
       (err, rows, fields) => {
+      
         res.send(rows);
       }  
   );
@@ -86,11 +88,11 @@ app.delete('/api/company/delete/:id', (req, res) => {
 //Create station
 app.post('/api/station/create', (req, res) => {
   let sql_create = 'INSERT INTO Company.S001 (SID, CID, Name) VALUES ( ?, ?, ?)';
-    let SID = req.body.SID;
-    let CID = req.body.CID;
-    let Name = req.body.Name;
+    let sid = req.body.SID;
+    let cid = req.body.CID;
+    let name = req.body.Name;
    
-    let params = [SID, CID, Name];
+    let params = [sid, cid, name];
     connection.query(sql_create, params,
         (err, rows, fields) => {
           res.send(rows);
@@ -149,24 +151,34 @@ app.get('/api/station/cid/:cid', (req, res) => {
 
 //Update station by id
 
-app.post('/api/station/update/:id', (req, res) => {
+app.put('/api/station/update/:sid', (req, res) => {
   
   let sql_update = 'UPDATE Company.S001 SET ? WHERE SID = ?';
-  let data = req.body;
-  let id = req.params.id;
-  connection.query(sql_update, [data, id],  
+  let name = req.body
+  console.log(name);
+  let id = req.params.sid;
+  console.log(id)
+  connection.query(sql_update, [name, id],  
       (err, rows, fields) => {
+        if(err) throw err;
+  
+    console.log('Data received from Db:');
+    console.log(rows);
         res.send(rows);
       }  
   );
 });
 
 //delete station by id
-app.delete('/api/station/delete/:id', (req, res) => {
+app.delete('/api/station/delete/:sid', (req, res) => {
   let sql_delete = 'DELETE FROM Company.S001 WHERE SID = ?';
-  let id = req.params.id;
+  let id = req.params.sid;
   connection.query(sql_delete, id,
       (err, rows, fields) => {
+        if(err) throw err;
+  
+        console.log('Data received from Db:');
+        console.log(rows);
         res.send(rows);
       }
   )
@@ -222,13 +234,37 @@ app.get('/api/stationtype/sid/:sid', (req, res) => {
   )
 })
 
+//create Station type by sid
+
+app.post('/api/stationtype/create', (req, res) => {
+  let sql_create = 'INSERT INTO Company.ST001 (STID, SID, NAME, MPOWER) VALUES ( ?, ?, ?, ?)';
+    let stid = req.body.STID;
+    let sid = req.body.SID;
+    let name = req.body.NAME;
+    let mpower = req.body.MPOWER;
+   
+    let params = [stid, sid, name, mpower];
+    
+    connection.query(sql_create, params,
+        (err, rows, fields) => {
+          if(err) throw err;
+          Console.log(params);
+          console.log('Stations data received from Db:');
+          console.log(rows)
+          res.send(rows);
+        }  
+    );
+  
+});
+
 //Update station type by id
 
-app.post('/api/station_type/update/:stid', (req, res) => {
+
+app.put('/api/station_type/update/:stid', (req, res) => {
   
   let sql_update = 'UPDATE Company.ST001 SET ? WHERE STID = ?';
   let data = req.body;
-  let id = req.params.id;
+  let id = req.params.stid;
   connection.query(sql_update, [data, id],  
       (err, rows, fields) => {
         res.send(rows);
@@ -236,10 +272,10 @@ app.post('/api/station_type/update/:stid', (req, res) => {
   );
 });
 
-//delete station by id
-app.delete('/api/station_type/delete/:stid', (req, res) => {
+//delete station type by id
+app.delete('/api/stationtype/delete/:stid', (req, res) => {
   let sql_delete = 'DELETE FROM Company.ST001 WHERE STID = ?';
-  let id = req.params.id;
+  let id = req.params.stid;
   connection.query(sql_delete, id,
       (err, rows, fields) => {
         res.send(rows);
