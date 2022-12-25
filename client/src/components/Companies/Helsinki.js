@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../../index.css";
 import Axios from 'axios';
 import { Link } from 'react-router-dom';
+//import { Container, Table, Row, Col, Card, CardTitle, CardBody, Modal, ModalHeader, Button, ModalFooter, ModalBody, Label, Input, Form, FormGroup } from 'reactstrap';
 //import MultilevelSideNav  from '../MultilevelSideNav'
 
 
@@ -15,6 +16,7 @@ const [stations, setStations] = useState([]);
 const [comname, setComname]= useState([]);
 const [sid, setSid] = useState("");
 const [stationtypes, setStationtypes] = useState([])
+const [searchTerm, setSearchTerm] = useState("")
 
 const cid = props.match.params.id;
 
@@ -22,6 +24,9 @@ useEffect(()=>{
   
 
   
+
+
+
 
 
   Axios.get('/api/station/cid/' + cid).then((data, key)=>{
@@ -40,10 +45,42 @@ useEffect(()=>{
       setComname(company_name);
     });
 
+
+
     
 
   
   },[])
+
+  // const handleChange = event => {
+  //   setSearchTerm(event.target.value);
+  // };
+
+  useEffect(() => {
+   
+
+    const results = stations.filter(station =>
+      (JSON.stringify(station).toLowerCase().includes(searchTerm.toLocaleLowerCase())
+  
+  
+      )
+      );
+    setStations(results);
+    if (searchTerm === "") {
+      Axios.get('/api/station/cid/' + cid).then((data, key)=>{
+
+  
+     
+        const sta_data = data.data[0]
+        
+        console.log(sta_data);
+        setStations(sta_data) 
+ })
+    }
+
+    console.log(results)
+  }, [searchTerm]);
+
 
 const handleStatype = (e) => {
   
@@ -67,7 +104,13 @@ const handleStatype = (e) => {
 
 }
 
+const onChangeSearch = (e) => {
 
+  const val = e.target.value;
+
+  setSearchTerm(val);
+
+}
  
 
   return (
@@ -79,7 +122,10 @@ const handleStatype = (e) => {
      
 {/* <div className= "split left"><div className="centered"> */}
 
-  
+<input type="text" name="title" id="exampleEmail"
+          placeholder="Search Station"
+          className="form-control mb-8 font-weight-bold " value={searchTerm} onChange={onChangeSearch} style={{ margin: "1rem" }}
+        />
       <div class="text-left" style={{marginTop: '5%'}} >
       <h3><b>Company</b>: {comname} </h3>
       <button class="btn btn-success">Create Station</button>{'  '}
@@ -143,6 +189,9 @@ const handleStatype = (e) => {
            >
              
               <th>Name</th>
+              <th>MPOWER</th>
+              <th>Edit</th>
+              <th>Delete</th>
              
            </tr>
          </thead>
@@ -150,7 +199,9 @@ const handleStatype = (e) => {
            <tbody>
              <tr>
                <td>{stationtypes.NAME}</td>
-            
+               <td>{stationtypes.MPOWER}</td>
+               <td><button class="btn"><i class="fa fa-edit"></i></button></td>
+               <td><button class="btn"><i class="fa fa-trash"></i></button></td> 
               
            </tr>
            </tbody>

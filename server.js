@@ -85,12 +85,12 @@ app.delete('/api/company/delete/:id', (req, res) => {
 //STATIONS API
 //Create station
 app.post('/api/station/create', (req, res) => {
-  let sql_create = 'INSERT INTO Company.S001 (ID, CID, Name) VALUES ( ?, ?, ?)';
-    let ID = req.body.ID;
+  let sql_create = 'INSERT INTO Company.S001 (SID, CID, Name) VALUES ( ?, ?, ?)';
+    let SID = req.body.SID;
     let CID = req.body.CID;
     let Name = req.body.Name;
    
-    let params = [ID, CID, Name];
+    let params = [SID, CID, Name];
     connection.query(sql_create, params,
         (err, rows, fields) => {
           res.send(rows);
