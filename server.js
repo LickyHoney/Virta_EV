@@ -72,9 +72,21 @@ app.post('/api/company/update/:id', (req, res) => {
   );
 });
 
+// //delete company by id
+// app.delete('/api/company/delete/:id', (req, res) => {
+//   let sql_delete = 'DELETE FROM Company.K001 WHERE ID = ?';
+//   let id = req.params.id;
+//   connection.query(sql_delete, id,
+//       (err, rows, fields) => {
+//         res.send(rows);
+//       }
+//   )
+// });
+
 //delete company by id
 app.delete('/api/company/delete/:id', (req, res) => {
-  let sql_delete = 'DELETE FROM Company.K001 WHERE ID = ?';
+  let sql_delete =  'DELETE Company.K001, Company.S001 , Company.ST001  FROM Company.K001  INNER JOIN Company.S001 INNER JOIN Company.ST001 WHERE Company.K001.ID = Company.S001.CID and Company.S001.SID = Company.ST001.SID AND Company.K001.ID = ?';
+  //let sql_delete = 'DELETE FROM Company.K001 WHERE ID = ?';
   let id = req.params.id;
   connection.query(sql_delete, id,
       (err, rows, fields) => {
@@ -169,11 +181,30 @@ app.put('/api/station/update/:sid', (req, res) => {
   );
 });
 
+// //delete station by id
+// app.delete('/api/station/delete/:sid', (req, res) => {
+//   let sql_delete = 'DELETE FROM Company.S001 WHERE SID = ?';
+//   let id = req.params.sid;
+//   connection.query(sql_delete, id,
+//       (err, rows, fields) => {
+//         if(err) throw err;
+  
+//         console.log('Data received from Db:');
+//         console.log(rows);
+//         res.send(rows);
+//       }
+//   )
+// });
+
 //delete station by id
 app.delete('/api/station/delete/:sid', (req, res) => {
-  let sql_delete = 'DELETE FROM Company.S001 WHERE SID = ?';
+
+  let sql_delete =  'DELETE Company.S001 , Company.ST001  FROM Company.S001  INNER JOIN Company.ST001 WHERE Company.S001.SID= Company.ST001.SID and Company.S001.SID = ?';
+
+  // let sql_delete = 'DELETE FROM Company.S001 WHERE SID = ?';
+
   let id = req.params.sid;
-  connection.query(sql_delete, id,
+  connection.query(sql_delete, [id, id],
       (err, rows, fields) => {
         if(err) throw err;
   
@@ -183,7 +214,6 @@ app.delete('/api/station/delete/:sid', (req, res) => {
       }
   )
 });
-
 //STATION TYPES API
 
 //get all stations types
