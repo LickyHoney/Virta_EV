@@ -1,70 +1,62 @@
-# Management
+# Virta EVCharging management system
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is implemented using React as a Front end and MYSQL as a backend technologies. Created three entities for Companies, Stations and Station types by linking companyID to station and station ID to station type. Also created CRUD operations for Companies, Stations and Station types. 
 
-## Available Scripts
+Backend task is implemented to write rest api calls for Adding a new cat, delete a cat, get all cats, get cat by id and get catby name.
+A React web application is implemented to consume developed REST API calls on cats mock data for the following functionalities:
+a. Get all cats.
+b. Get Cat by ID.
+c. Get Cat by Name.
+d. Add a new Cat with id, name, weight and breed_group.
+c. Delete a cat.
 
-In the project directory, you can run:
+## Project Status
 
-### `yarn start`
+All the mentioned functionalities are completed
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Front End
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Framework Used: React JS
+Pre requisites: NPM/Node JS environment
 
-### `yarn test`
+## Back End
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+MYSQL
+Rest API Libraries: Axios
 
-### `yarn build`
+## Installation and Setup Instructions
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Source code URL: https://github.com/LickyHoney/CatAPIV1.git
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+###Steps to run it locally:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1.Clone down this repository. You will need git, `node` and `npm` installed globally on your machine.
 
-### `yarn eject`
+git clone https://github.com/LickyHoney/Virta_EV.git
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2.Get into folder
+cd Virta_EV 
+npm install &
+cd client
+npm install
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4.Start the application.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+npm run dev
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+5.Build the project
+npm run build
 
-## Learn More
+6.To Visit App:
+http://localhost:3000
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## API End Points
+    To get all cats         -   GET /cats
+    To get cat by id        -   GET /cats/{id}
+    To get a cat by name    -   GET /cats?name={name}
+    To delete a cat         -   DELETE /cats/{id}
+    To create a cat         -   POST /cats
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Note
 
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+JSON-Server is running on port 3020 and the same port has been used in the URL in CatAPIService file in services folder. JSON file cats.json is in the public folder and JSON Server command "json-server -p3020 watch public/cats.json" is set in server script in package.json file and JSON Server runs with script command "npm run server".

@@ -45,7 +45,7 @@ app.get('/api/company/id/:id', (req, res) => {
 })
 
 //Create company
-app.post('/api/company/create/', (req, res) => {
+app.post('/api/company/create', (req, res) => {
   let sql_create = 'INSERT INTO Company.K001 (ID, Parent_ID, Name) VALUES ( ?, ?, ?)';
   let id = req.body.ID;
   let parent_id = req.body.Parent_ID;
@@ -54,6 +54,24 @@ app.post('/api/company/create/', (req, res) => {
   connection.query(sql_create, params,
       (err, rows, fields) => {
       
+        res.send(rows);
+      }  
+  );
+});
+
+//Create parent company
+app.post('/api/pcompany/create', (req, res) => {
+  let sql_create = 'INSERT INTO Company.K001 (ID, Name) VALUES ( ?, ?)';
+  let id = req.body.ID;
+  
+  let name = req.body.Name;
+  let params = [id, name];
+  connection.query(sql_create, params,
+      (err, rows, fields) => {
+        if(err) throw err;
+  
+        console.log('Stations data received from Db:');
+        console.log(rows)
         res.send(rows);
       }  
   );
