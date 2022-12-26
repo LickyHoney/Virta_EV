@@ -78,7 +78,7 @@ app.post('/api/pcompany/create', (req, res) => {
 });
 
 //Update Company by id
-app.post('/api/company/update/:id', (req, res) => {
+app.put('/api/company/update/:id', (req, res) => {
   
   let sql_update = 'UPDATE Company.K001 SET ? WHERE ID = ?';
   let data = req.body;

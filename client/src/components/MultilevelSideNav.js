@@ -28,6 +28,7 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onC
     const [id, setId] = useState(0);
     const [parentid, setParentid] = useState();
     const [name, setName] = useState("");
+    const [uname, setUname] = useState("");
     //const [searchTerm, setSearchTerm] = useState([])
     const [q, setQ] = useState("")
     useEffect(()=>{
@@ -71,6 +72,9 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onC
         
         
         },[])
+        const handleUname = (e) => {
+            setUname(e.target.value);
+        }
         const handleId = (e) => {
             setId(e.target.value);
           }
@@ -109,6 +113,41 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onC
           
           
           }
+          const handleUpdate = (id) => {
+            debugger;
+           
+          
+            Axios.put('/api/company/update/' + id, {
+                
+               
+                Name: uname
+            })
+            alert("station is created")
+            window.location.href="/" ;
+            debugger;
+            
+          
+          
+          }
+
+          const handleDelete = (id) => {
+            debugger;
+            Axios.delete('/api/company/delete/' + id ).then((data, key) => {
+            
+              setStations(
+                stations.filter((company) => {
+                  return company.ID !== id;
+                })
+               
+              );
+             alert ("station is deleted")
+             window.location.href="/" 
+              if (data.data[0].status === 200) 
+          debugger;
+              alert("Success!");
+          
+            });
+          };
 //         const onChangeSearch = (e) => {
 // debugger;
 //             const val = e.target.value;
@@ -177,8 +216,30 @@ data = parentcompany
                     
                 
                 to={"/helsinki_p/" + item.ID  }>{item.Name}</Link>
-                 <button className="btn btn-success"><i class="fa fa-edit"></i></button>
-                 <button className="btn btn-danger"><i class="fa fa-trash"></i></button> </Nav> 
+                 <button class="btn btn-success"onClick={() => setShowEdit(true)}><i class="fa fa-edit"></i></button>
+               <Modal 
+           isOpen={showEdit}
+           contentLabel="Minimal Modal Example"
+           className="Modal_STA"
+           overlayClassName="Overlay"
+        >
+          <div>
+          <form>
+              <label>
+                Name:
+                <input type="text" name="name" onChange={handleUname} />
+              </label>
+              <br />
+              
+              
+            </form>
+          </div>
+          
+          <button onClick={() => {setShowEdit(false); handleUpdate(item.ID);}}>save</button>
+          <button onClick={() => setShowEdit(false)}>cancel</button>
+        
+        </Modal>
+        <td><button class="btn btn-danger" onClick={(e)=> {handleDelete(item.ID);}}><i class="fa fa-trash"></i></button></td> </Nav> 
                 
 
         ) : <Nav><Link key={index}>{item.Name}</Link></Nav>
