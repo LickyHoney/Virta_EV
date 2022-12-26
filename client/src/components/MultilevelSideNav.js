@@ -26,7 +26,7 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onC
     const [showAdd, setShowAdd] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [id, setId] = useState(0);
-    const [parentid, setParentid] = useState(0);
+    const [parentid, setParentid] = useState();
     const [name, setName] = useState("");
     //const [searchTerm, setSearchTerm] = useState([])
     const [q, setQ] = useState("")
@@ -75,11 +75,11 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onC
             setId(e.target.value);
           }
           const handleParentid = (e) => {
-            var p_id = e.target.value;
-            if(!p_id){
-                p_id="";
-            }
-            setParentid(p_id);
+            // var p_id = e.target.value;
+            // if(!p_id){
+            //     p_id="";
+            // }
+            setParentid(e.target.value);
 
           }
           const handleName = (e) => {
@@ -218,7 +218,7 @@ data = parentcompany
               <br />
               <label>
                 Parent_ID:
-                <input type="text" name="name" value={null} />
+                <input type="text" name="name" onChange={handleParentid} />
               </label>
               <br />
               <label>
