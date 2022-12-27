@@ -11,14 +11,9 @@ import Modal from 'react-modal';
 import "bootstrap/dist/js/bootstrap.min.js";
 
 import {CanvasJSChart} from 'canvasjs-react-charts'
-// var CanvasJS = CanvasJSReact.CanvasJS;
-// var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 
-
-
-
-
+//Declarations
 
 const Stations = (props) => {
 const [stations, setStations] = useState([]);
@@ -57,9 +52,10 @@ const [statypename, setStatypename] = useState("");
 const cid = props.match.params.id;
 
 
+//Initilization
 useEffect(()=>{
 
-  
+ //Getting station by company id 
 const results = stations.filter(station =>
     (JSON.stringify(station).toLowerCase().includes(searchTerm.toLocaleLowerCase())
 
@@ -75,6 +71,8 @@ const results = stations.filter(station =>
 })
   }
 
+  //Api call for getting company name by company id to display in UI
+
   Axios.get('/api/company/id/' + cid).then ((data, key) => {
      if(data.data[0].Parent_ID===null){
     const company_name = data.data[0].Name;
@@ -87,14 +85,16 @@ const results = stations.filter(station =>
     setComname(company_name);
     })
   }
-  debugger;
+  
   });
 },[searchTerm])
+
+//Getting station types data by its station id 
 
 const handleStatype = (e) => {
   
   Axios.get('/api/stationtype/sid/' + sid).then((data, key)=>{
-debugger;
+
 const statype_data = data.data[0][0]
 if(data.data[0][0]!==undefined){
   setStationtypes(statype_data);
@@ -105,7 +105,6 @@ if(data.data[0][0]!==undefined){
   }
 });
 }
-
 const onChangeSearch = (e) => {
   const val = e.target.value;
   setSearchTerm(val);
@@ -113,8 +112,6 @@ const onChangeSearch = (e) => {
 const handleStasid = (e) => {
   setStasid(e.target.value);
 }
-
-
 const handleStampower = (e) => {
   setStampower(e.target.value);
 }
@@ -159,8 +156,10 @@ const handleMpower = (e) => {
 const openAddModal = () => setIsAddOpen(true);
 const closeAddModal = () => setIsAddOpen(false);
 
+//Updates a station
+
 const handleUpdate = (id) => {
-  debugger;
+  
  
 
   Axios.put('/api/station/update/' + id, {
@@ -170,16 +169,17 @@ const handleUpdate = (id) => {
   })
   alert("station is created")
   window.location.href="/helsinki_p/" + cid
-  debugger;
+  
   
 
 
 }
-debugger;
+
 console.log(sta)
 
+//updates a station types
 const handleStUpdate = (id) => {
-  debugger;
+  
  
 
   Axios.put('/api/station_type/update/' + id, {
@@ -190,7 +190,7 @@ const handleStUpdate = (id) => {
   })
   alert("station is created")
   window.location.href="/helsinki_p/" + cid
-  debugger;
+  
   
 
 
@@ -243,12 +243,13 @@ const options = {
     ]
   }]
 }
-///api/company/station_status/c
+
+//Inserting status info based on click 
 const handleStatus = (sta) => {
   
-  debugger;
+  
   Axios.get('/api/stationtype/sid/' + sid).then((data, key)=>{
-    debugger;
+    
     const statype_data = data.data[0][0]
     if(data.data[0][0]!==undefined){
      
@@ -261,7 +262,7 @@ const handleStatus = (sta) => {
 
   if (sta==="c"){
     
-      debugger;
+      
      
     // if(!stations.SID){
       Axios.post('/api/company/station_status/c', {
@@ -275,7 +276,7 @@ const handleStatus = (sta) => {
           console.log(res.data);
           
       })
-     debugger;
+     
     
     
       window.location.href="/helsinki_p/" + cid
@@ -293,8 +294,10 @@ const changestatus = (e) => {
   }
 }
 
+//Creates a station
+
 const handleSubmit = () => {
-  debugger;
+  
  
 // if(!stations.SID){
   Axios.post('/api/station/create', {
@@ -314,11 +317,13 @@ const handleSubmit = () => {
 
 
 }
-debugger;
+
 console.log(sta);
-debugger;
+
+//Creates a station type
+
 const handleStSubmit = () => {
-  debugger;
+  
  
 // if(!stations.SID){
   Axios.post('/api/stationtype/create', {
@@ -340,8 +345,10 @@ const handleStSubmit = () => {
 
 }
 
+//deletes a station 
+
 const handleDelete = (id) => {
-  debugger;
+  
   Axios.delete('/api/station/delete/' + id ).then((data, key) => {
   
     setStations(
@@ -352,15 +359,17 @@ const handleDelete = (id) => {
     );
    alert ("station is deleted")
     if (data.data[0].status === 200) 
-debugger;
+
     alert("Success!");
 
     window.location.href="/helsinki_p/" + cid
   });
 };
 
+//deletes a station type
+
 const handlestDelete = (id) => {
-  debugger;
+  
   Axios.delete('/api/stationtype/delete/' + id ).then((data, key) => {
   
     setStations(
@@ -372,22 +381,16 @@ const handlestDelete = (id) => {
    alert ("station is deleted")
    window.location.href="/helsinki_p/" + cid
     if (data.data[0].status === 200) 
-debugger;
+
     alert("Success!");
 
     
   });
 };
 
-
-  return (
+//Rendering
+return (
     <div >
-      {/* <p>test</p> */}
-
-  
-      {/* <button class="btn"><i class="fa fa-add"></i> Add</button> */}
-     
-{/* <div className= "split left"><div className="centered"> */}
 
 
 
@@ -431,14 +434,13 @@ debugger;
               <br />
             </form>
           </div>
-          {/* <div className="btn-group"> */}
           <button onClick={() => {setIsAddOpen(false); handleSubmit();}}>save</button>
           <button onClick={() => setIsAddOpen(false)}>cancel</button>
-          {/* </div> */}
+        
         </Modal>
 </div>
 
-      {/* <button class="btn btn-success">Create Station type</button> */}
+     
       </div>
      
       
@@ -468,7 +470,7 @@ debugger;
               <Link key={station.SID}
                 
                 onClick={(e) => { handleStatype(); 
-                  debugger;
+                  
                                     setSid(station.SID)
                                     setStatypename(station.Name)}}
                     
@@ -530,9 +532,7 @@ debugger;
          ))} 
        </table>
        </fieldset>
-       {/* </div> */}
-       {/* </div></div> */}
-       {/* <div className= "split right"><div className="centered"> */}
+      
       <div className="righttab">
       <fieldset style={{width: "50%", float:"right"}} >
        <h3><b>Station</b>: {statypename} </h3>
@@ -567,10 +567,10 @@ debugger;
               <br />
             </form>
           </div>
-          {/* <div className="btn-group"> */}
+          
           <button onClick={() => {setShow(false); handleStSubmit();}}>save</button>
           <button onClick={() => setShow(false)}>cancel</button>
-          {/* </div> */}
+         
         </Modal>
       
        <table className="list"  style={{float: 'center'}}>
@@ -634,55 +634,18 @@ debugger;
        </table>
        <div style={{width: "80%", height: "200px"}}>
 			<CanvasJSChart style={{width: "15%"}}options = {options}
-				/* onRef={ref => this.chart = ref} */
+				
 			/>
-			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+			
 		</div>
        
        </fieldset>
       
        </div>
-       {/* <Modal show={isAddOpen} onHide={closeAddModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add a new Station</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div>
-            <form>
-              <label>
-                SID:
-                <input type="text" name="name" onChange={handleSID} />
-              </label>
-              <br />
-              <label>
-                CID:
-                <input type="text" name="name" onChange={handleCID} />
-              </label>
-              <br />
-              <label>
-               Name:
-                <input type="text" name="name" onChange={handleName} />
-              </label>
-              <br />
-            </form>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            onClick={() => {
-              handleSubmit();
-              closeAddModal();
-            }}
-          >
-            Add
-          </Button>
-        </Modal.Footer>
-     </Modal> */}
+      
       </div>
       </div>  
-    //   </div>
-    // </div>
+    
   )
 }
 

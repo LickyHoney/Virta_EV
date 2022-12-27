@@ -10,14 +10,18 @@ import Modal from 'react-modal';
 
 const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
 
+    //style div for Menu bar
+
     const Nav = styled.div`
    
-  background: #15171c;
-  height: 80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
+        background: #15171c;
+        height: 80px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    `;
+
+    //Declarations
     const [pid,setpid]=useState();
     const [currentMenus, setCurrentMenus] = useState(data);
     const [previousStack, setPreviousStack] = useState([]);
@@ -34,13 +38,15 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
     const [q, setQ] = useState("")
     const [companies, setCompanies]= useState([]);
 
+    //Initialization
+
     useEffect(()=>{
+        //Getting all companies
         Axios.get('/api/company').then((data, key)=>{
          const data1 = data.data;
          setCompanies(data1);
         let parent_companies = [];
-       
-      console.log(JSON.stringify(data.data));
+   
       
         data.data.forEach((com) => {
           if (com.Parent_ID === null) {
@@ -49,28 +55,15 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
         
         });
 
-        // const results = parent_companies.filter(com =>
-        //   (JSON.stringify(com).toLowerCase().includes(searchTerm)
-      
-      
-        //   )
-        //   );
         
         setParentCompany([...parentcompany, ...parent_companies]);
-        console.log(parent_companies)
-        });
-        
-
-
-        Axios.get('/api/station').then((data, key)=>{
-
-            const stations_data = data.data;
-            console.log(data.data);
-            setStations(stations_data);
+       
         });
         
         
         },[])
+
+
         const handleUname = (e) => {
             setUname(e.target.value);
         }
@@ -78,20 +71,18 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
             setId(e.target.value);
           }
           const handleParentid = (e) => {
-            // var p_id = e.target.value;
-            // if(!p_id){
-            //     p_id="";
-            // }
             setParentid(e.target.value);
 
           }
           const handleName = (e) => {
             setName(e.target.value);
           }
+
+          //Creates a company
           const handleSubmit = () => {
-            debugger;
+            
            
-          // if(!stations.SID){
+         
             Axios.post('/api/company/create', {
                 ID: id,
                 Parent_ID: parentid,
@@ -100,40 +91,32 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
               
                 previousStack.push(res.data);
                 setPreviousStack(previousStack);
-                debugger;
+                
                 setCurrentMenus(res.data);
-                console.log(res.data);
+                
                 
             })
-           
-          
-          
-            window.location.href="/"
+         window.location.href="/"
           
           
           }
+
+          //Updates a company
           const handleUpdate = (id) => {
-            debugger;
-           
-          
-            Axios.put('/api/company/update/' + id, {
+                 Axios.put('/api/company/update/' + id, {
                 
                
                 Name: uname
             })
-            alert("station is created")
+            alert("Company is created")
             window.location.href="/" ;
-            debugger;
             
-          
-          
-          }
+        }
          
-
-
-          const handleDelete = (id) => {
-            debugger;
-            Axios.delete('/api/company/delete/' + id ).then((data, key) => {
+//Deletes a company
+const handleDelete = (id) => {
+            
+    Axios.delete('/api/company/delete/' + id ).then((data, key) => {
             
               setStations(
                 stations.filter((company) => {
@@ -141,45 +124,37 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
                 })
                
               );
-             alert ("station is deleted")
+             alert ("Company is deleted")
              window.location.href="/" 
               if (data.data[0].status === 200) 
-          debugger;
+          
               alert("Success!");
           
             });
           };
+
+          //onChane function for the search filter
         const onChangeSearch = (e) => {
-debugger;
+
             const val = e.target.value.toLowerCase();
           
             setSearchTerm(val);
           
           }
 
-const menuItems = (e) =>{
+//Pushing commpanies data into the menus
 
-debugger;
-    // const results = parentcompany.filter(com =>
-    //     (com.toLowerCase().includes(searchTerm.toLocaleLowerCase())
-    
-    
-    //     )
-    //     );
+const menuItems = (e) =>{
 
 
         previousStack.push(parentcompany);
         setPreviousStack(previousStack);
-        debugger;
+        
         setCurrentMenus(parentcompany);
         
-        // const results = currentMenus.filter(com =>
-        //     (JSON.stringify(com).toLowerCase().includes(searchTerm.toLocaleLowerCase())
+       
         
-        
-        //     )
-        //     );
-        
+ //Rendering       
     
 return (
                         
@@ -189,9 +164,9 @@ return (
                         
                     )
 }
-debugger;
-console.log(pid);
-debugger;
+
+
+
 
         
     const renderMenuItems =data => {
@@ -311,7 +286,7 @@ const results = data.filter(com =>
           {/* </div> */}
         </Modal>
 
-            {/* <Link to={"#"} className="closebtn" onClick={e => sideNavHandler(false)}>&times;</Link> */}
+           
             
                 
                
