@@ -102,7 +102,18 @@ app.put('/api/company/update/:id', (req, res) => {
 // });
 
 //delete company by id
-app.delete('/api/subcompany/delete/:id', (req, res) => {
+// app.delete('/api/subcompany/delete/:id', (req, res) => {
+//   let sql_delete =  'DELETE Company.K001, Company.S001 , Company.ST001  FROM Company.K001  INNER JOIN Company.S001 INNER JOIN Company.ST001 WHERE Company.K001.ID = Company.S001.CID and Company.S001.SID = Company.ST001.SID AND Company.K001.ID = ?';
+//   //let sql_delete = 'DELETE FROM Company.K001 WHERE ID = ?';
+//   let id = req.params.id;
+//   connection.query(sql_delete, id,
+//       (err, rows, fields) => {
+//         res.send(rows);
+//       }
+//   )
+//});
+
+app.delete('/api/company/delete/:id', (req, res) => {
   let sql_delete =  'DELETE Company.K001, Company.S001 , Company.ST001  FROM Company.K001  INNER JOIN Company.S001 INNER JOIN Company.ST001 WHERE Company.K001.ID = Company.S001.CID and Company.S001.SID = Company.ST001.SID AND Company.K001.ID = ?';
   //let sql_delete = 'DELETE FROM Company.K001 WHERE ID = ?';
   let id = req.params.id;
@@ -113,17 +124,6 @@ app.delete('/api/subcompany/delete/:id', (req, res) => {
   )
 });
 
-app.delete('/api/company/delete/:id', (req, res) => {
-  let sql_delete =  'DELETE Company.K001, Company.S001 , Company.ST001  FROM Company.K001  INNER JOIN Company.S001 INNER JOIN Company.ST001 WHERE Company.K001.ID = Company.S001.CID and Company.S001.SID = Company.ST001.SID AND Company.K001.ID = ?';
-  //let sql_delete = 'DELETE FROM Company.K001 WHERE ID = ?';
-  let id = req.params.id;
-  let params = [id, id];
-  connection.query(sql_delete, params,
-      (err, rows, fields) => {
-        res.send(rows);
-      }
-  )
-});
 
 //STATIONS API
 //Create station

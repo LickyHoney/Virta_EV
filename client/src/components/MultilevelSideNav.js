@@ -210,7 +210,7 @@ const results = data.filter(com =>
           <form>
               <label>
                 Name:
-                <input type="text" name="name" onChange={handleUname} />
+                <input type="text" name="uname" onChange={handleUname} />
               </label>
               <br />
               
@@ -262,6 +262,7 @@ const results = data.filter(com =>
            overlayClassName="Overlay"
         >
           <div>
+            
           <form>
               <label>
                 ID:
