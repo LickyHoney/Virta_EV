@@ -7,6 +7,7 @@ body {
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 code {
@@ -232,4 +233,14 @@ input:checked + .slider .off
 {
     display: block;
     float: left
+}
+
+.bg {
+  background-image: url("https://evocharge.com/wp-content/uploads/2021/02/GettyImages-1184969192-1.jpg");
+  height: 100%; 
+
+ 
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

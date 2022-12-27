@@ -3,14 +3,15 @@ import { Link } from 'react-router-dom';
 import './MultilevelSideNav.css';
 import styled from 'styled-components';
 import Axios from 'axios';
-import Helsinki from './Companies/Helsinki';
+import Helsinki from './Companies/Stations';
 import { common } from '@material-ui/core/colors';
 import Modal from 'react-modal';
 
 
-const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onChangeSearch }) => {
+const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
 
     const Nav = styled.div`
+   
   background: #15171c;
   height: 80px;
   display: flex;
@@ -29,14 +30,17 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onC
     const [parentid, setParentid] = useState();
     const [name, setName] = useState("");
     const [uname, setUname] = useState("");
-    //const [searchTerm, setSearchTerm] = useState([])
+    const [searchTerm, setSearchTerm] = useState([])
     const [q, setQ] = useState("")
+    const [companies, setCompanies]= useState([]);
+
     useEffect(()=>{
         Axios.get('/api/company').then((data, key)=>{
-        
+         const data1 = data.data;
+         setCompanies(data1);
         let parent_companies = [];
        
-      
+      console.log(JSON.stringify(data.data));
       
         data.data.forEach((com) => {
           if (com.Parent_ID === null) {
@@ -44,15 +48,18 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onC
            }
         
         });
+
+        // const results = parent_companies.filter(com =>
+        //   (JSON.stringify(com).toLowerCase().includes(searchTerm)
+      
+      
+        //   )
+        //   );
+        
         setParentCompany([...parentcompany, ...parent_companies]);
-       
+        console.log(parent_companies)
         });
-        // const results = parentcompany.filter(com =>
-        //     (JSON.stringify(com).toLowerCase().includes(searchTerm)
         
-        
-        //     )
-        //     );
 
 
         Axios.get('/api/station').then((data, key)=>{
@@ -60,15 +67,7 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onC
             const stations_data = data.data;
             console.log(data.data);
             setStations(stations_data);
-            
-              
-              
-            
-              
-              
-              
-              
-              });
+        });
         
         
         },[])
@@ -148,15 +147,15 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler, searchTerm, onC
           
             });
           };
-//         const onChangeSearch = (e) => {
-// debugger;
-//             const val = e.target.value;
+        const onChangeSearch = (e) => {
+debugger;
+            const val = e.target.value.toLowerCase();
           
-//             setSearchTerm(val);
+            setSearchTerm(val);
           
-//           }
+          }
 
-const teststa = (e) =>{
+const menuItems = (e) =>{
 
 debugger;
     // const results = parentcompany.filter(com =>
@@ -196,8 +195,15 @@ debugger;
     const renderMenuItems =data => {
 
         
-data = parentcompany
-        return data.map((item, index) =>
+data = companies
+
+const results = data.filter(com =>
+  (JSON.stringify(com.Name).toString().toLowerCase().indexOf(searchTerm)> -1
+
+
+  )
+  );
+        return results.map((item, index) =>
     
        
         (item) ? (
@@ -208,7 +214,7 @@ data = parentcompany
                 onClick={(e) => {
                 
                     
-                    teststa();
+                  menuItems();
                     setpid(item.ID);
                     window.location.href="/helsinki_p/" + item.ID 
                     
@@ -239,7 +245,7 @@ data = parentcompany
           <button onClick={() => setShowEdit(false)}>cancel</button>
         
         </Modal>
-        <td><button class="btn btn-danger" onClick={(e)=> {handleDelete(item.ID);}}><i class="fa fa-trash"></i></button></td> </Nav> 
+        <button class="btn btn-danger" onClick={(e)=> {handleDelete(item.ID);}}><i class="fa fa-trash"></i></button></Nav> 
                 
 
         ) : <Nav><Link key={index}>{item.Name}</Link></Nav>
@@ -251,18 +257,26 @@ data = parentcompany
 
 
     }
-   
+
     
     return data && (
         <>
          
-        <div style={{ width: (sideNavState) ? '280px' : '0' }} className="multilevelSideNav">
+        <div style={{ width: (sideNavState) ? '300px' : '0' }} className="multilevelSideNav">
+        <Link to={"/"}style={{float: "left"}} onClick={e => {
+                    const prevState = previousStack.pop();
+                    setPreviousStack(previousStack);
+                    setCurrentMenus(prevState);
+                    window.location.href="/" 
+
+                }}><i class="fa fa-home"></i></Link>
         <div style={{display: "inline-flex"}}>
+        
         <input type="text" name="title" id="exampleEmail"
           placeholder="Search Company"
           className="form-control mb-8 font-weight-bold " value={searchTerm} onChange={onChangeSearch} style={{ margin: "1rem", width: "70%" }}
         />
-          <td><button className="btn btn-success" style={{ margin: "1rem"}}onClick={() => setShowAdd(true)}>+</button></td> </div>
+          <button className="btn btn-success" style={{ margin: "1rem"}}onClick={() => setShowAdd(true)}>+</button></div>
           
         <Modal 
            isOpen={showAdd}
@@ -296,15 +310,9 @@ data = parentcompany
         </Modal>
 
             {/* <Link to={"#"} className="closebtn" onClick={e => sideNavHandler(false)}>&times;</Link> */}
-            {(previousStack.length) ?
-                <Link to={"#"} onClick={e => {
-                    const prevState = previousStack.pop();
-                    setPreviousStack(previousStack);
-                    setCurrentMenus(prevState);
-
-                }}>&lt; Back</Link>
-                : null
-            }
+            
+                
+               
             {
                 renderMenuItems(currentMenus)
             }

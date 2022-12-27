@@ -16,7 +16,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 
 
 
-const Helsinki = (props) => {
+const Stations = (props) => {
 const [stations, setStations] = useState([]);
 const [comname, setComname]= useState([]);
 const [sid, setSid] = useState("");
@@ -38,24 +38,17 @@ const [mpower, setMpower] = useState("");
 const [st_name, setSt_name]= useState("");
 const [st_sid, setSt_sid]= useState("");
 const [stmpower, setStmpower]= useState("");
+const [subcom, setSubcom]=useState("");
+const [company, setCompany]= useState("");
 const history = useHistory();
 
 const [statypename, setStatypename] = useState("");
- 
-
-
 const cid = props.match.params.id;
 
 useEffect(()=>{
-  
 
   
-
-
-
-
-
-  const results = stations.filter(station =>
+const results = stations.filter(station =>
     (JSON.stringify(station).toLowerCase().includes(searchTerm.toLocaleLowerCase())
 
 
@@ -64,92 +57,45 @@ useEffect(()=>{
   setStations(results);
   if (searchTerm === "") {
     Axios.get('/api/station/cid/' + cid).then((data, key)=>{
-
-
-   
       const sta_data = data.data[0]
-      
       console.log(sta_data);
       setStations(sta_data) 
 })
   }
 
-    Axios.get('/api/company/id/' + cid).then ((data, key) => {
-     
+  Axios.get('/api/company/id/' + cid).then ((data, key) => {
+     if(data.data[0].Parent_ID===null){
+    const company_name = data.data[0].Name;
+    setComname(company_name);
+  }else{
+    const subcomname = data.data[0].Name;
+    setSubcom(subcomname);
+    Axios.get('/api/company/id/' + data.data[0].Parent_ID).then((data, key) => {
       const company_name = data.data[0].Name;
-      setComname(company_name);
-    });
+    setComname(company_name);
+    })
+  }
+  debugger;
+  });
+},[searchTerm])
 
-
-
-    
-
-  
-  },[searchTerm])
-
-  // const handleChange = event => {
-  //   setSearchTerm(event.target.value);
-  // };
-
-//   useEffect(() => {
-   
-
-//     const results = stations.filter(station =>
-//       (JSON.stringify(station).toLowerCase().includes(searchTerm.toLocaleLowerCase())
-  
-  
-//       )
-//       );
-//     setStations(results);
-//     if (searchTerm === "") {
-//       Axios.get('/api/station/cid/' + cid).then((data, key)=>{
-
-  
-     
-//         const sta_data = data.data[0]
-        
-//         console.log(sta_data);
-//         setStations(sta_data) 
-//  })
-//     }
-
-//     console.log(results)
-//   }, [searchTerm]);
-
-debugger;
 const handleStatype = (e) => {
   
-  
-
-
-
   Axios.get('/api/stationtype/sid/' + sid).then((data, key)=>{
 debugger;
 const statype_data = data.data[0][0]
-     if(data.data[0][0]!==undefined){
-    
-    
-    setStationtypes(statype_data);
-
-    console.log(stationtypes);
-   
+if(data.data[0][0]!==undefined){
+  setStationtypes(statype_data);
   }else{
     setStationtypes([]);
   }
-   
 });
-
-
 }
 
 const onChangeSearch = (e) => {
-
   const val = e.target.value;
-
   setSearchTerm(val);
-
 }
-
 const handleSt_name = (e) => {
   setSt_name(e.target.value);
 }
@@ -178,9 +124,6 @@ const handleName = (e) => {
 const handleSTID = (e) => {
   setStid(e.target.value);
 };
-// const handleStsid = (e) => {
-//   setStsid(e.target.value);
-// };
 
 const handleStname = (e) => {
   setStname(e.target.value);
@@ -312,7 +255,7 @@ debugger;
 
 
   return (
-    <div className="container">
+    <div >
       {/* <p>test</p> */}
 
   
@@ -322,7 +265,7 @@ debugger;
 
 
 
-
+<div>
 
       <div class="text-left" style={{marginTop: '5%'}} >
       <div className="btn-group">
@@ -331,8 +274,7 @@ debugger;
           
           className="form-control mb-8 font-weight-bold " value={searchTerm} onChange={onChangeSearch} style={{ margin: "1rem", width: "40%"}}
         />
- 
-<button className="btn btn-success" style={{margin: "1rem"}} onClick={() => setIsAddOpen(true)}>Create Station</button>
+        <button className="btn btn-success" style={{margin: "1rem"}} onClick={() => setIsAddOpen(true)}>Create Station</button>
         <Modal 
            isOpen={isAddOpen}
            contentLabel="Minimal Modal Example"
@@ -363,18 +305,19 @@ debugger;
           <button onClick={() => setIsAddOpen(false)}>cancel</button>
           {/* </div> */}
         </Modal>
-
- 
-      
-    
 </div>
 
       {/* <button class="btn btn-success">Create Station type</button> */}
       </div>
-      
      
+      
+      
     <fieldset style={{width: "50%"}}>
     <h3><b>Company</b>: {comname} </h3>
+      { subcom &&
+        <h3><b>Subcompany</b>: {subcom} </h3>
+      }
+    
       <table className="list"  style={{float: 'left'}} id= "tableId">
          
          <thead>
@@ -596,9 +539,10 @@ debugger;
         </Modal.Footer>
       </Modal> */}
       </div>
+      </div>  
     //   </div>
     // </div>
   )
 }
 
-export default Helsinki
+export default Stations
