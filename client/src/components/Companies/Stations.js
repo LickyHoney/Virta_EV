@@ -196,6 +196,8 @@ const handleStUpdate = (id) => {
 
 }
 
+const Stationdata = []
+
 const options = {
   animationEnabled: true,
   exportEnabled: true,
@@ -217,9 +219,7 @@ const options = {
     yValueFormattingString: "KW",
     edgeLablePlacement: "shift",
     minnimum:new Date(2022, 1, 1), Maximum: new Date(2025, 31, 12),
-    dataPoints: [
-      {x: "2019-01-03", y: 15}, {x: "2019-01-04", y: 18}
-    ]
+    dataPoints: Stationdata
   }]
 }
 
