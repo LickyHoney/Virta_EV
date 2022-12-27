@@ -347,17 +347,16 @@ app.delete('/api/stationtype/delete/:stid', (req, res) => {
 
 //api for insert status
 //A=Update C=insert
-app.post('/api/company/station_status/c', (req, res) => {
-  let sql_status_insert = 'INSERT INTO Company.ST001H (SID, STID, MPOWER, STIME) VALUES ( ?, ?, ?, ?) '
-  let sid = req.body.SID;
+app.post('/api/company/stationstatus/c', (req, res) => {
+  let sql_status_insert = 'INSERT INTO Company.ST001H (SID, STID, MPOWER) VALUES ( ? ) '
+  let sid = req.body;
   let stid= req.body.STID;
-  
   let mpower = req.body.MPOWER;
-  let stime = req.body.STIME;
+  //let stime = req.body.STIME;
   
-  let params = [ sid,  stid, mpower, stime];
+  let params = [ sid,  stid, mpower];
     
-    connection.query(sql_status_insert, params,
+    connection.query(sql_status_insert, sid,
         (err, rows, fields) => {
           if(err) throw err;
           Console.log(params);

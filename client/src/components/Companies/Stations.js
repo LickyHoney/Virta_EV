@@ -214,38 +214,17 @@ const options = {
   data: [{
     type: "line",
     toolTipContent: "Day {x}: {y}KW",
-    xValueFormattingString: "YYYY-MM-DD-hh-mm-ss",
     yValueFormattingString: "KW",
+    edgeLablePlacement: "shift",
+    minnimum:new Date(2022, 1, 1), Maximum: new Date(2025, 31, 12),
     dataPoints: [
-      { x: new Date(2022-12-20-22-33-44), y: 25 },
-      { x: new Date(2022-12-20-22-33-44), y: 61 },
-      { x: new Date(2022-12-20-22-33-44), y: 64 },
-      { x: new Date(2022-12-20-22-33-44), y: 62 }
-      // { x: 5, y: 64 },
-      // { x: 6, y: 60 },
-      // { x: 7, y: 58 },
-      // { x: 8, y: 59 },
-      // { x: 9, y: 53 },
-      // { x: 10, y: 54 },
-      // { x: 11, y: 61 },
-      // { x: 12, y: 60 },
-      // { x: 13, y: 55 },
-      // { x: 14, y: 60 },
-      // { x: 15, y: 56 },
-      // { x: 16, y: 60 },
-      // { x: 17, y: 59.5 },
-      // { x: 18, y: 63 },
-      // { x: 19, y: 58 },
-      // { x: 20, y: 54 },
-      // { x: 21, y: 59 },
-      // { x: 22, y: 64 },
-      // { x: 23, y: 59 }
+      {x: "2019-01-03", y: 15}, {x: "2019-01-04", y: 18}
     ]
   }]
 }
 
 //Inserting status info based on click 
-const handleStatus = (sta) => {
+const handleStatus = (status) => {
   
   
   Axios.get('/api/stationtype/sid/' + sid).then((data, key)=>{
