@@ -10,6 +10,10 @@ import Modal from 'react-modal';
 
 import "bootstrap/dist/js/bootstrap.min.js";
 
+import {CanvasJSChart} from 'canvasjs-react-charts'
+// var CanvasJS = CanvasJSReact.CanvasJS;
+// var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+
 
 
 
@@ -40,10 +44,18 @@ const [st_sid, setSt_sid]= useState("");
 const [stmpower, setStmpower]= useState("");
 const [subcom, setSubcom]=useState("");
 const [company, setCompany]= useState("");
+const [sta, setSta]= useState("");
+const [stasid, setStasid]= useState("");
+const [stastid, setStastid]= useState("");
+const [status, setStatus]= useState([]);
+
+const [stampower, setStampower]= useState("");
+const [stastime, setStastime]= useState("");
 const history = useHistory();
 
 const [statypename, setStatypename] = useState("");
 const cid = props.match.params.id;
+
 
 useEffect(()=>{
 
@@ -86,6 +98,8 @@ debugger;
 const statype_data = data.data[0][0]
 if(data.data[0][0]!==undefined){
   setStationtypes(statype_data);
+  // setStasid(statype_data.STID);
+  // setStampower(statype_data.MPOWER)
   }else{
     setStationtypes([]);
   }
@@ -95,6 +109,17 @@ if(data.data[0][0]!==undefined){
 const onChangeSearch = (e) => {
   const val = e.target.value;
   setSearchTerm(val);
+}
+const handleStasid = (e) => {
+  setStasid(e.target.value);
+}
+
+
+const handleStampower = (e) => {
+  setStampower(e.target.value);
+}
+const handleStastime = (e) => {
+  setStastime(e.target.value);
 }
 const handleSt_name = (e) => {
   setSt_name(e.target.value);
@@ -150,6 +175,8 @@ const handleUpdate = (id) => {
 
 
 }
+debugger;
+console.log(sta)
 
 const handleStUpdate = (id) => {
   debugger;
@@ -167,6 +194,103 @@ const handleStUpdate = (id) => {
   
 
 
+}
+
+const options = {
+  animationEnabled: true,
+  exportEnabled: true,
+  theme: "light2", // "light1", "dark1", "dark2"
+  title:{
+    text: "POWER Consumption"
+  },
+  axisY: {
+    title: "MPower",
+    suffix: "KW"
+  },
+  axisX: {
+    title: "timeline",
+    interval: 2
+  },
+  data: [{
+    type: "line",
+    toolTipContent: "Day {x}: {y}KW",
+    xValueFormattingString: "YYYY-MM-DD-hh-mm-ss",
+    yValueFormattingString: "KW",
+    dataPoints: [
+      { x: new Date(2022-12-20-22-33-44), y: 25 },
+      { x: new Date(2022-12-20-22-33-44), y: 61 },
+      { x: new Date(2022-12-20-22-33-44), y: 64 },
+      { x: new Date(2022-12-20-22-33-44), y: 62 }
+      // { x: 5, y: 64 },
+      // { x: 6, y: 60 },
+      // { x: 7, y: 58 },
+      // { x: 8, y: 59 },
+      // { x: 9, y: 53 },
+      // { x: 10, y: 54 },
+      // { x: 11, y: 61 },
+      // { x: 12, y: 60 },
+      // { x: 13, y: 55 },
+      // { x: 14, y: 60 },
+      // { x: 15, y: 56 },
+      // { x: 16, y: 60 },
+      // { x: 17, y: 59.5 },
+      // { x: 18, y: 63 },
+      // { x: 19, y: 58 },
+      // { x: 20, y: 54 },
+      // { x: 21, y: 59 },
+      // { x: 22, y: 64 },
+      // { x: 23, y: 59 }
+    ]
+  }]
+}
+///api/company/station_status/c
+const handleStatus = (sta) => {
+  
+  debugger;
+  Axios.get('/api/stationtype/sid/' + sid).then((data, key)=>{
+    debugger;
+    const statype_data = data.data[0][0]
+    if(data.data[0][0]!==undefined){
+     
+      setStastid(statype_data.STID);
+      setStampower(statype_data.MPOWER)
+      }else{
+        setStationtypes([]);
+      }
+    });
+
+  if (sta==="c"){
+    
+      debugger;
+     
+    // if(!stations.SID){
+      Axios.post('/api/company/station_status/c', {
+          SID: sid,
+          STID: stastid,
+          MPOWER: stampower,
+          STIME: Date().toLocaleString()
+      }).then((res) => {
+        
+          setStatus(res.data)
+          console.log(res.data);
+          
+      })
+     debugger;
+    
+    
+      window.location.href="/helsinki_p/" + cid
+    
+    
+  
+}}
+const changestatus = (e) => {
+  if ( console.log( e.target.checked ) ) {
+    setSta("a")
+    console.log(sta)
+  } else {
+    setSta( "c")
+    console.log(sta)
+  }
 }
 
 const handleSubmit = () => {
@@ -190,7 +314,9 @@ const handleSubmit = () => {
 
 
 }
-
+debugger;
+console.log(sta);
+debugger;
 const handleStSubmit = () => {
   debugger;
  
@@ -266,7 +392,12 @@ debugger;
 
 
 <div>
-
+  
+<fieldset style={{width: "50%"}}>
+<h3><b>Company</b>: {comname} </h3>
+      { subcom &&
+        <h3><b>Subcompany</b>: {subcom} </h3>
+      }
       <div class="text-left" style={{marginTop: '5%'}} >
       <div className="btn-group">
       <input type="text" name="title" id="exampleEmail"
@@ -311,14 +442,9 @@ debugger;
       </div>
      
       
-      
-    <fieldset style={{width: "50%"}}>
-    <h3><b>Company</b>: {comname} </h3>
-      { subcom &&
-        <h3><b>Subcompany</b>: {subcom} </h3>
-      }
     
-      <table className="list"  style={{float: 'left'}} id= "tableId">
+    
+      <table className="list"  style={{float: 'left', marginTop: '2rem'}} id= "tableId">
          
          <thead>
            <tr
@@ -353,15 +479,21 @@ debugger;
                 </td> 
 
                 
-                <td><label class="switch">
- <input type="checkbox" id="togBtn" />
+                <td>
+                
+                  <label class="switch">
+ <input type="checkbox" onChange={ changestatus } onClick={(e)=> handleStatus(sta)} id="togBtn" />
  <div class="slider round">
  
-  <span class="on">Charging</span>
+  <span class="on" >Charging</span>
   <span class="off">Available</span>
  
  </div>
-</label></td>
+
+ 
+</label>
+
+</td>
                <td><button class="btn"onClick={() => setIsOpen(true)}><i class="fa fa-edit"></i></button></td>
                <Modal 
            isOpen={isOpen}
@@ -401,8 +533,10 @@ debugger;
        {/* </div> */}
        {/* </div></div> */}
        {/* <div className= "split right"><div className="centered"> */}
-
-       <button className="btn btn-success" style={{margin: "1rem"}} disabled={(stationtypes.STID)?true:false} onClick={() => setShow(true)}>Create StationType</button>
+      <div className="righttab">
+      <fieldset style={{width: "50%", float:"right"}} >
+       <h3><b>Station</b>: {statypename} </h3>
+       <button className="btn btn-success" style={{margin: "2rem"}} disabled={(stationtypes.STID)?true:false} onClick={() => setShow(true)}>Create StationType</button>
         <Modal 
            isOpen={show}
            contentLabel="Minimal Modal Example"
@@ -438,8 +572,7 @@ debugger;
           <button onClick={() => setShow(false)}>cancel</button>
           {/* </div> */}
         </Modal>
-       <fieldset style={{width: "50%", float:"right"}} >
-       <h3><b>Station</b>: {statypename} </h3>
+      
        <table className="list"  style={{float: 'center'}}>
          
          <thead>
@@ -493,14 +626,22 @@ debugger;
           
         </Modal>
                <td><button class="btn" onClick={(e)=> {handlestDelete(stationtypes.STID);setStsid(stationtypes.STID)}}><i class="fa fa-trash"></i></button></td> 
+
               
            </tr>
            </tbody>
          {/* ))}  */}
        </table>
+       <div style={{width: "80%", height: "200px"}}>
+			<CanvasJSChart style={{width: "15%"}}options = {options}
+				/* onRef={ref => this.chart = ref} */
+			/>
+			{/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+		</div>
+       
        </fieldset>
       
-
+       </div>
        {/* <Modal show={isAddOpen} onHide={closeAddModal}>
         <Modal.Header closeButton>
           <Modal.Title>Add a new Station</Modal.Title>
@@ -537,7 +678,7 @@ debugger;
             Add
           </Button>
         </Modal.Footer>
-      </Modal> */}
+     </Modal> */}
       </div>
       </div>  
     //   </div>

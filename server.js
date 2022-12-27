@@ -102,7 +102,7 @@ app.put('/api/company/update/:id', (req, res) => {
 // });
 
 //delete company by id
-app.delete('/api/company/delete/:id', (req, res) => {
+app.delete('/api/subcompany/delete/:id', (req, res) => {
   let sql_delete =  'DELETE Company.K001, Company.S001 , Company.ST001  FROM Company.K001  INNER JOIN Company.S001 INNER JOIN Company.ST001 WHERE Company.K001.ID = Company.S001.CID and Company.S001.SID = Company.ST001.SID AND Company.K001.ID = ?';
   //let sql_delete = 'DELETE FROM Company.K001 WHERE ID = ?';
   let id = req.params.id;
@@ -113,6 +113,17 @@ app.delete('/api/company/delete/:id', (req, res) => {
   )
 });
 
+app.delete('/api/company/delete/:id', (req, res) => {
+  let sql_delete =  'DELETE Company.K001, Company.S001 , Company.ST001  FROM Company.K001  INNER JOIN Company.S001 INNER JOIN Company.ST001 WHERE Company.K001.ID = Company.S001.CID and Company.S001.SID = Company.ST001.SID AND Company.K001.ID = ?';
+  //let sql_delete = 'DELETE FROM Company.K001 WHERE ID = ?';
+  let id = req.params.id;
+  let params = [id, id];
+  connection.query(sql_delete, params,
+      (err, rows, fields) => {
+        res.send(rows);
+      }
+  )
+});
 
 //STATIONS API
 //Create station
@@ -334,16 +345,62 @@ app.delete('/api/stationtype/delete/:stid', (req, res) => {
 
 //STATUS API
 
-//api for status 
-app.get('/api/company/station_status/:id', (req, res) => {
-  let id = req.params.id;
-  if(id == 1 ){
-res.send("Charging")
-}
-if(id == 0){
-  res.send("Available")
-  }
+//api for insert status
+//A=Update C=insert
+app.post('/api/company/station_status/c', (req, res) => {
+  let sql_status_insert = 'INSERT INTO Company.ST001H (SID, STID, MPOWER, STIME) VALUES ( ?, ?, ?, ?) '
+  let sid = req.body.SID;
+  let stid= req.body.STID;
+  
+  let mpower = req.body.MPOWER;
+  let stime = req.body.STIME;
+  
+  let params = [ sid,  stid, mpower, stime];
+    
+    connection.query(sql_status_insert, params,
+        (err, rows, fields) => {
+          if(err) throw err;
+          Console.log(params);
+          console.log('Stations status data received from Db:');
+          console.log(rows)
+          res.send(rows);
+        }  
+    );
+  
+});
+
+app.get('/api/company/stationn_status/:sid', (req, res) => {
+  let sql_fetchstatusbyid = 'SELECT * FROM Company.ST001H WHERE SID = ?';
+  
+  let sid = req.params.sid;
+ 
+  connection.query(sql_fetchstatusbyid, sid, 
+      (err, rows, fields) => {
+        if(err) throw err;
+  
+    console.log('Stations data received from Db:');
+    console.log(sid)
+   
+   
+        res.send([rows]);
+       
+      }
+  )
 })
+
+//api for status 
+app.put('/api/company/station_status/a/:sid', (req, res) => {
+  let sql_status_update = 'UPDATE Company.ST001H SET ? WHERE SID = ?';
+
+   let data = req.body;
+  let sid = req.params.sid;
+  connection.query(sql_status_update, [data, sid],  
+      (err, rows, fields) => {
+        res.send(rows);
+      }  
+  );
+});
+
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

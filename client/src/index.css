@@ -142,11 +142,10 @@ table.list {
 
 .btn-group {
   
-margin-left: -40em;
-  color: #f3f3f3;
-margin-top: 1em
-}
 
+  color: #f3f3f3;
+
+}
 
 .switch {
   position: relative;
@@ -235,7 +234,7 @@ input:checked + .slider .off
     float: left
 }
 
-.bg {
+/* .bg {
   background-image: url("https://evocharge.com/wp-content/uploads/2021/02/GettyImages-1184969192-1.jpg");
   height: 100%; 
 
@@ -243,4 +242,4 @@ input:checked + .slider .off
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
+} */

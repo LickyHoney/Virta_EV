@@ -189,8 +189,9 @@ console.log(resultArray1);
       <Router>
         <MultilevelSideNav sideNavState={sideNavState} sideNavHandler={setSideNavState} data={results} value={searchTerm} onChange={onChangeSearch} />
         <div>
-          <Nav><h2><span style={{fontSize:'20px',cursor:'pointer', color:"white"}} onClick={e=>setSideNavState(true)}>&#9776; EV Charging Solution</span></h2> </Nav> 
-              
+          <Nav><h2><span style={{fontSize:'20px',cursor:'pointer', color:"white"}} onClick={e=>setSideNavState(true)}>&#9776; Companies</span></h2> 
+          </Nav> 
+          <h2><b class="headertekst"> EV Charging Stations</b></h2>
           <Switch> 
           <Route path="/page/:slug" exact component={Page} />
 
