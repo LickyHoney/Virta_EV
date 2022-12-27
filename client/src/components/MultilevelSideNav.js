@@ -108,7 +108,7 @@ const MultilevelSideNav = ({ data, sideNavState, sideNavHandler }) => {
                
                 Name: uname
             })
-            alert("Company is created")
+            alert("Company is updated")
             window.location.href="/" ;
             
         }
